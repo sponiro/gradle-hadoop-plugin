@@ -9,4 +9,4 @@
 APP_NAME="${applicationName}"
 HADOOP_LIBJARS="${hadoopLibjars}"
 
-exec hadoop jar "${appJar}" -libjars "\${HADOOP_LIBJARS}" "\$@"
+exec hadoop jar "${appJar}" -libjars "\${HADOOP_LIBJARS}" <% if (mainClassName) print mainClassName %> "\$@"

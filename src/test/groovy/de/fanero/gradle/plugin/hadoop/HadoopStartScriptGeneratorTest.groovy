@@ -1,11 +1,13 @@
 package de.fanero.gradle.plugin.hadoop
 
-import org.hamcrest.Matchers
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
 import org.junit.rules.TemporaryFolder
+
+import static org.hamcrest.Matchers.containsString
+import static org.hamcrest.Matchers.not
 
 class HadoopStartScriptGeneratorTest {
 
@@ -59,22 +61,55 @@ class HadoopStartScriptGeneratorTest {
     void checkScriptApplicationName() {
         String content = createScriptContent()
 
-        Assert.assertThat(content, Matchers.containsString('hadoopTestApplication'))
+        Assert.assertThat(content, containsString('hadoopTestApplication'))
     }
 
     @Test
     void checkScriptLibraries() {
         String content = createScriptContent()
 
-        Assert.assertThat(content, Matchers.containsString('library.jar'))
-        Assert.assertThat(content, Matchers.containsString('my2ndlibrary.jar'))
+        Assert.assertThat(content, containsString('library.jar'))
+        Assert.assertThat(content, containsString('my2ndlibrary.jar'))
     }
 
     @Test
     void checkScriptApplicationLibrary() {
         String content = createScriptContent()
 
-        Assert.assertThat(content, Matchers.containsString('myJar.jar'))
+        Assert.assertThat(content, containsString('myJar.jar'))
+    }
+
+    @Test
+    void checkScriptMainClassName() {
+        HadoopStartScriptGenerator generator = createGenerator()
+        generator.mainClassName = "HadoopMain"
+
+        StringWriter writer = new StringWriter()
+        generator.generateUnixScript(writer)
+
+        Assert.assertThat(writer.toString(), containsString('HadoopMain'))
+    }
+
+    @Test
+    void checkScriptEmptyMainClassName() {
+        HadoopStartScriptGenerator generator = createGenerator()
+        generator.mainClassName = ""
+
+        StringWriter writer = new StringWriter()
+        generator.generateUnixScript(writer)
+
+        Assert.assertThat(writer.toString(), not(containsString('HadoopMain')))
+    }
+
+    @Test
+    void checkScriptNullMainClassName() {
+        HadoopStartScriptGenerator generator = createGenerator()
+        generator.mainClassName = null
+
+        StringWriter writer = new StringWriter()
+        generator.generateUnixScript(writer)
+
+        Assert.assertThat(writer.toString(), not(containsString('HadoopMain')))
     }
 
     private String createScriptContent() {

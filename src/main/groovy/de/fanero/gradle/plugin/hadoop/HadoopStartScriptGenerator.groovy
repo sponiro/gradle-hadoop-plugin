@@ -7,6 +7,8 @@ class HadoopStartScriptGenerator {
 
     String applicationName
 
+    String mainClassName
+
     String appJar
 
     List<String> libJars
@@ -54,7 +56,8 @@ class HadoopStartScriptGenerator {
         def binding = [
                 applicationName: applicationName,
                 appJar: appJar,
-                hadoopLibjars: libJars.join(',')
+                hadoopLibjars: libJars.join(','),
+                mainClassName: mainClassName
         ]
         binding
     }
