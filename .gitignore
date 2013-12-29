@@ -1,0 +1,10 @@
+# build directory
+build/
+.gradle/
+
+# idea
+.idea/
+*.iml
+
+# swap
+*.swp

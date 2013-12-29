@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+##############################################################################
+##
+##  "${applicationName}" Hadoop start up script for UN*X
+##
+##############################################################################
+
+APP_NAME="${applicationName}"
+HADOOP_LIBJARS="${hadoopLibjars}"
+
+exec hadoop jar "${appJar}" -libjars "\${HADOOP_LIBJARS}" "\$@"

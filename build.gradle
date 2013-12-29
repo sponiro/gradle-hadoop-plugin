@@ -1,0 +1,16 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+    compile group: 'com.google.guava', name: 'guava', version: '15.0'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-integration', version: '1.3'
+}
+
+group = 'de.fanero.gradle.plugin.hadoop'
+version = '0.1'
