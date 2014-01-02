@@ -1,4 +1,14 @@
-gradle-hadoop-plugin
-====================
+# gradle-hadoop-plugin
+
 
 A gradle plugin much like the core application plugin of gradle but tailored for use with hadoop. As of now it's only purpose is to create startup scripts with dependencies in the right place.
+
+```groovy
+apply plugin: 'hadoop'
+```
+
+## Tasks
+* `hadoopDistTar` - Bundles the project as a Hadoop application with libs and Un*x specific scripts.
+* `hadoopDistZip` - Bundles the project as a Hadoop application with libs and Un*x specific scripts.
+* `hadoopInstall` - Installs the project as a Hadoop application along with libs and Un*x specific scripts.
+
