@@ -61,6 +61,7 @@ class HadoopPlugin implements Plugin<Project> {
         HadoopScriptTask task = project.tasks.create(TASK_START_SCRIPT_NAME, HadoopScriptTask)
         task.description = "Creates Un*x specific scripts to run the project as a Hadoop application."
         task.conventionMapping.outputDir = { new File(getHadoopBuildDir(), 'scripts') }
+        task.conventionMapping.mainClassName = { pluginExtension.mainClassName }
         task.conventionMapping.applicationName = { getScriptname() }
         task.conventionMapping.libJars = { project.tasks.jar.outputs.files + project.configurations.runtime }
     }

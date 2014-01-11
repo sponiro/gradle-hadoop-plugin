@@ -28,6 +28,9 @@ class HadoopScriptTask extends DefaultTask {
     String applicationName
 
     @Input
+    String mainClassName
+
+    @Input
     FileCollection libJars
 
     @Input
@@ -45,6 +48,7 @@ class HadoopScriptTask extends DefaultTask {
     void generate() {
         def generator = new HadoopStartScriptGenerator()
         generator.applicationName = getApplicationName()
+        generator.mainClassName = getMainClassName()
         generator.appJar = getLibPrefix() + project.tasks.jar.archiveName
         generator.libJars = getLibJars().collect { getLibPrefix() + it.name }
         generator.outputDir = getOutputDir()
