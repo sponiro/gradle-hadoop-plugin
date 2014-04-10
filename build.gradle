@@ -25,7 +25,7 @@ dependencies {
 }
 
 group = 'de.fanero.gradle.plugin.hadoop'
-version = '0.1'
+version = '0.2'
 def compatibility = 1.5
 sourceCompatibility = compatibility
 targetCompatibility = compatibility
