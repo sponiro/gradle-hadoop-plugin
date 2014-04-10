@@ -21,5 +21,6 @@ cd \$DIR
 
 APP_NAME="${applicationName}"
 HADOOP_LIBJARS="${hadoopLibjars}"
+export HADOOP_CLASSPATH=`echo \${HADOOP_LIBJARS} | sed s/,/:/g`
 
-exec hadoop jar "${appJar}" -libjars "\${HADOOP_LIBJARS}" <% if (mainClassName) print mainClassName %> "\$@"
+exec hadoop jar "${appJar}" <% if (mainClassName) print mainClassName %> -libjars "\${HADOOP_LIBJARS}" "\$@"
