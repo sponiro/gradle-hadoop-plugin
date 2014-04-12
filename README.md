@@ -8,6 +8,7 @@ To use the plugin, add the bintray repository to your script:
 ```groovy
 buildscript {
     repositories {
+        mavenCentral()
         maven {
             url 'http://dl.bintray.com/sponiro/gradle-plugins'
         }
