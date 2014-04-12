@@ -30,6 +30,8 @@ class HadoopStartScriptGenerator {
 
     File outputDir
 
+    boolean exportHadoopClasspath
+
     private SimpleTemplateEngine engine = new SimpleTemplateEngine()
 
     void generateUnixScript(File script) {
@@ -72,6 +74,7 @@ class HadoopStartScriptGenerator {
                 applicationName: applicationName,
                 appJar: appJar,
                 hadoopLibjars: libJars.join(','),
+                exportHadoopClasspath: exportHadoopClasspath ? libJars.join(":") : "",
                 mainClassName: mainClassName
         ]
         binding

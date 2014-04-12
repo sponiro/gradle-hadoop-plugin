@@ -17,8 +17,12 @@ package de.fanero.gradle.plugin.hadoop
 
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
-import org.junit.Assert
+import static org.hamcrest.CoreMatchers.is
 import org.junit.Test
+
+
+import static org.junit.Assert.assertNotNull
+import static org.junit.Assert.assertThat
 
 class HadoopPluginTest {
 
@@ -29,7 +33,29 @@ class HadoopPluginTest {
         Project project = ProjectBuilder.builder().build()
         project.apply plugin: HADOOP_PLUGIN
 
-        Assert.assertNotNull(project.tasks[HadoopPlugin.TASK_START_SCRIPT_NAME])
+        assertNotNull(project.tasks[HadoopPlugin.TASK_START_SCRIPT_NAME])
+    }
+
+    @Test
+    public void testMainClassName() throws Exception {
+        Project project = ProjectBuilder.builder().build()
+        project.apply plugin: HADOOP_PLUGIN
+
+        project.hadoop.mainClassName = "myMainClass"
+
+        assertThat(project.tasks.hadoopStartScripts.mainClassName, is("myMainClass"))
+    }
+
+    @Test
+    public void testSpacesInMainClassName() throws Exception {
+        Project project = ProjectBuilder.builder().build()
+        project.apply plugin: HADOOP_PLUGIN
+
+        project.hadoop.mainClassName = "test  "
+
+        println project.tasks.hadoopStartScripts.mainClassName
+
+        assertThat(project.tasks.hadoopStartScripts.mainClassName, is("test"))
     }
 
     @Test
@@ -56,6 +82,6 @@ class HadoopPluginTest {
         Project project = ProjectBuilder.builder().build()
         project.apply plugin: HADOOP_PLUGIN
 
-        Assert.assertNotNull(project.tasks[taskname].description)
+        assertNotNull(project.tasks[taskname].description)
     }
 }

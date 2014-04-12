@@ -15,7 +15,6 @@
  */
 package de.fanero.gradle.plugin.hadoop
 
-import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
@@ -23,11 +22,12 @@ import org.junit.rules.TemporaryFolder
 
 import static org.hamcrest.Matchers.containsString
 import static org.hamcrest.Matchers.not
+import static org.junit.Assert.assertThat
 
 class HadoopStartScriptGeneratorTest {
 
     @Rule
-    public TemporaryFolder testFolder = new TemporaryFolder()
+    public TemporaryFolder folder = new TemporaryFolder()
 
     @Rule
     public ExpectedException thrown = ExpectedException.none()
@@ -38,9 +38,7 @@ class HadoopStartScriptGeneratorTest {
         generator.applicationName = null
 
         thrown.expect(NullPointerException.class)
-        generator.generateUnixScript(testFolder.newFile())
-
-        println testFolder.newFile().text
+        generator.generateUnixScript(folder.newFile())
     }
 
     @Test
@@ -49,9 +47,7 @@ class HadoopStartScriptGeneratorTest {
         generator.appJar = null
 
         thrown.expect(NullPointerException.class)
-        generator.generateUnixScript(testFolder.newFile())
-
-        println testFolder.newFile().text
+        generator.generateUnixScript(folder.newFile())
     }
 
     @Test
@@ -60,14 +56,12 @@ class HadoopStartScriptGeneratorTest {
         generator.libJars = null
 
         thrown.expect(NullPointerException.class)
-        generator.generateUnixScript(testFolder.newFile())
-
-        println testFolder.newFile().text
+        generator.generateUnixScript(folder.newFile())
     }
 
     @Test
     void generateScript() {
-        def script = testFolder.newFile()
+        def script = folder.newFile()
         def generator = createGenerator()
         generator.generateUnixScript(script)
     }
@@ -76,22 +70,22 @@ class HadoopStartScriptGeneratorTest {
     void checkScriptApplicationName() {
         String content = createScriptContent()
 
-        Assert.assertThat(content, containsString('hadoopTestApplication'))
+        assertThat(content, containsString('hadoopTestApplication'))
     }
 
     @Test
     void checkScriptLibraries() {
         String content = createScriptContent()
 
-        Assert.assertThat(content, containsString('library.jar'))
-        Assert.assertThat(content, containsString('my2ndlibrary.jar'))
+        assertThat(content, containsString('library.jar'))
+        assertThat(content, containsString('my2ndlibrary.jar'))
     }
 
     @Test
     void checkScriptApplicationLibrary() {
         String content = createScriptContent()
 
-        Assert.assertThat(content, containsString('myJar.jar'))
+        assertThat(content, containsString('myJar.jar'))
     }
 
     @Test
@@ -102,7 +96,7 @@ class HadoopStartScriptGeneratorTest {
         StringWriter writer = new StringWriter()
         generator.generateUnixScript(writer)
 
-        Assert.assertThat(writer.toString(), containsString('HadoopMain'))
+        assertThat(writer.toString(), containsString('HadoopMain'))
     }
 
     @Test
@@ -113,7 +107,29 @@ class HadoopStartScriptGeneratorTest {
         StringWriter writer = new StringWriter()
         generator.generateUnixScript(writer)
 
-        Assert.assertThat(writer.toString(), not(containsString('HadoopMain')))
+        assertThat(writer.toString(), not(containsString('HadoopMain')))
+    }
+
+    @Test
+    void checkScriptNoExport() {
+        HadoopStartScriptGenerator generator = createGenerator()
+
+        StringWriter writer = new StringWriter()
+        generator.generateUnixScript(writer)
+
+        assertThat(writer.toString(), not(containsString('export')))
+    }
+
+    @Test
+    void checkScriptExport() {
+        HadoopStartScriptGenerator generator = createGenerator()
+        generator.exportHadoopClasspath = true
+
+        StringWriter writer = new StringWriter()
+        generator.generateUnixScript(writer)
+
+        assertThat(writer.toString(), containsString('export'))
+        println writer.toString()
     }
 
     @Test
@@ -124,7 +140,7 @@ class HadoopStartScriptGeneratorTest {
         StringWriter writer = new StringWriter()
         generator.generateUnixScript(writer)
 
-        Assert.assertThat(writer.toString(), not(containsString('HadoopMain')))
+        assertThat(writer.toString(), not(containsString('HadoopMain')))
     }
 
     private String createScriptContent() {

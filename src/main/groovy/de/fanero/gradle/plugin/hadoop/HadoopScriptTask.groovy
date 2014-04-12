@@ -34,6 +34,9 @@ class HadoopScriptTask extends DefaultTask {
     FileCollection libJars
 
     @Input
+    boolean exportHadoopClasspath
+
+    @Input
     @Optional
     String libPrefix = '../lib/'
 
@@ -51,6 +54,7 @@ class HadoopScriptTask extends DefaultTask {
         generator.mainClassName = getMainClassName()
         generator.appJar = getLibPrefix() + project.tasks.jar.archiveName
         generator.libJars = getLibJars().collect { getLibPrefix() + it.name }
+        generator.exportHadoopClasspath = getExportHadoopClasspath()
         generator.outputDir = getOutputDir()
         generator.generateUnixScript(getUnixScriptName())
     }

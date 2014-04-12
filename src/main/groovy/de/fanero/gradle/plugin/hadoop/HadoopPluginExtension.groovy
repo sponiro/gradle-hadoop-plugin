@@ -13,6 +13,8 @@ class HadoopPluginExtension {
 
     String mainClassName
 
+    boolean exportHadoopClasspath
+
     HadoopPluginExtension(Project project) {
         applicationName = project.name
         applicationDistribution = project.copySpec {}
